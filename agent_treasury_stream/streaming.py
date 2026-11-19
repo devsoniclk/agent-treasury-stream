@@ -51,7 +51,6 @@ class FlowStreamEngine:
 
         # Check cliff unlock
         if cfg.cliff_epoch > 0.0 and current_epoch < cfg.cliff_epoch:
-            snap.last_checkpoint = current_epoch
             return
 
         if cfg.cliff_epoch > 0.0 and not self._cliff_disbursed[stream_id]:
@@ -114,7 +113,7 @@ class FlowStreamEngine:
 
         claimable = self.get_claimable_amount(stream_id, current_epoch)
         if requested_amount > claimable + 1e-9:
-            raise ValueError(f"Requested {requested_amount:.4f} exceeds claimable balance {claimable:.4f}")
+            raise ValueError(f"Cannot withdraw: requested {requested_amount:.4f} exceeds claimable balance {claimable:.4f}")
 
         actual_payout = min(requested_amount, claimable)
         self.registry[stream_id].withdrawn += actual_payout

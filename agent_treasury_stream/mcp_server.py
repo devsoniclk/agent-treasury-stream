@@ -88,7 +88,7 @@ def tool_withdraw_stream(
     try:
         withdrawn = _CONTROLLER.stream_engine.execute_withdrawal(
             stream_id=stream_id,
-            amount_usd=amount_usd,
+            requested_amount=amount_usd,
             current_epoch=current_epoch,
         )
         return json.dumps({

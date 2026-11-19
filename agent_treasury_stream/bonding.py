@@ -120,7 +120,7 @@ class ComputeBondingEngine:
             raise ValueError(f"Slippage limit violated: avg price {avg_price:.4f} > limit {spot_prior * (1.0 + slippage_cap_pct):.4f}")
 
         if self.circulating_supply + units > self.params.max_quota_supply:
-            raise ValueError("Minting would exceed max compute quota supply")
+            raise ValueError("Minting would exceed max supply")
 
         self.circulating_supply += units
         self.treasury_vault_usd += net_capital
@@ -182,7 +182,7 @@ class ComputeBondingEngine:
         rec = self.allocations[agent_id]
         avail = rec.units_minted - rec.units_burned
         if units_to_redeem > avail + 1e-9:
-            raise ValueError(f"Cannot redeem more than available quota ({avail:.4f})")
+            raise ValueError(f"Insufficient surplus quota: cannot redeem {units_to_redeem:.4f} > available {avail:.4f}")
 
         s1 = self.circulating_supply
         s0 = max(0.0, s1 - units_to_redeem)
