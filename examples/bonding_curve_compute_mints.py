@@ -26,8 +26,8 @@ def main() -> None:
     print(f"New Spot Price: ${bonding.get_spot_unit_price():.4f} USD | Supply: {bonding.circulating_supply:,.2f}")
 
     # 3. Agent 1 burns compute units for inference execution
-    burned = bonding.burn_units(agent_1, units=50.0)
-    print(f"\n{agent_1} burned {burned:,.2f} compute units for task execution.")
+    delivered_cycles = bonding.consume_compute(agent_1, units_to_burn=50.0)
+    print(f"\n{agent_1} consumed 50.0 compute units ({delivered_cycles:,.2f} cycles delivered).")
     print(f"Cumulative Tokens Burned: {bonding.cumulative_tokens_burned:,.2f}")
     print(f"Cumulative Fees Burned: ${bonding.cumulative_fee_burned_usd:,.2f} USD")
 

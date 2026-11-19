@@ -149,12 +149,14 @@ def tool_burn_compute_quota(
 ) -> str:
     """Burn compute quota tokens upon compute job execution."""
     try:
-        burned = _CONTROLLER.bonding_engine.burn_units(agent_id, units_to_burn)
+        delivered_cycles = _CONTROLLER.bonding_engine.consume_compute(agent_id, units_to_burn)
+        alloc = _CONTROLLER.bonding_engine.allocations[agent_id]
         return json.dumps({
             "status": "success",
             "agent_id": agent_id,
-            "units_burned": burned,
-            "remaining_agent_quota": _CONTROLLER.bonding_engine.allocations[agent_id].units_minted - _CONTROLLER.bonding_engine.allocations[agent_id].units_burned,
+            "units_burned": units_to_burn,
+            "delivered_cycles": delivered_cycles,
+            "remaining_agent_quota": alloc.units_minted - alloc.units_burned,
         }, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})
